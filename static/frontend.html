@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload PO Files</title>
+</head>
+<body>
+  <h1>Upload Purchase Orders</h1>
+  <input type="file" id="fileInput" multiple>
+  <button onclick="uploadFiles()">Upload</button>
+  <pre id="result"></pre>
+
+  <script>
+    async function uploadFiles() {
+      const input = document.getElementById('fileInput');
+      const files = input.files;
+      const formData = new FormData();
+      for (let file of files) {
+        formData.append("files", file);
+      }
+      const res = await fetch("/upload", {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
